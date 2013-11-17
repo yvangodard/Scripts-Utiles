@@ -1,0 +1,36 @@
+### BEGIN INIT INFO
+# Provides:          firewall
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Demarrage du script lors de la sequence boot
+# Description:       Ajout des regles de parefeu iptables
+### END INIT INFO
+
+case $1 in
+    start)
+    /usr/local/bin/firewall/fw-start.sh
+    ;;
+    status)
+    echo "- Liste des règles :"
+    /sbin/iptables -n -L
+    ;;
+    stop)
+    /usr/local/bin/firewall/fw-reset.sh
+    ;;
+    restart)
+    /usr/local/bin/firewall/fw-start.sh
+    ;;
+    test)
+    /usr/local/bin/firewall/fw-start.sh
+    echo "Vous avez 5 minutes pour tester vos règles avant réinitialisation automatique du firewall."
+    echo /usr/local/bin/firewall/fw-reset.sh | at now + 5 min
+    ;;
+    *)
+    echo "usage: iptables {start|status|stop|restart|test}"
+    exit 1
+    ;;
+esac
+
+exit 0

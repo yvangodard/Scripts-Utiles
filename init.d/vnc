@@ -1,0 +1,40 @@
+### BEGIN INIT INFO
+# Provides: vnc
+# Required-Start:
+# Required-Stop:  
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+### END INIT INFO
+
+#!/bin/sh
+#----------------------------------------
+# Lancer automatiquement VNC 
+#----------------------------------------
+# Short-Description: Service de démarrage et extinction du serveur VNC sur compte root.
+VNCUSER='root'
+
+case "$1" in
+	start)
+ 		su $VNCUSER -c 'vncserver :1 -geometry 1600x1200 -depth 24'
+		echo "Lancement de TightVNC server pour l'utilisateur $VNCUSER "
+		;;
+	stop)
+		killall Xtightvnc
+		echo "Tightvncserver arrêté"
+		;;
+	restart)
+		killall Xtightvnc
+		echo "Tightvncserver arrêté"
+		su $VNCUSER -c 'vncserver :1 -geometry 1600x1200 -depth 24'
+		echo "Lancement de TightVNC server pour l'utilisateur $VNCUSER "
+		;;
+	status)
+		echo "Lancement de la commande ps -ef | grep Xtightvnc"
+		ps -ef | grep Xtightvnc
+		;;
+	*)
+		echo "Usage: /etc/init.d/vnc {start|stop|restart|status}"
+		exit 1
+		;;
+		esac
+exit 0
