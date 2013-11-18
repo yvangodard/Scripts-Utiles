@@ -64,25 +64,27 @@ fi
  
 ## Création d'un répertoire temporaire pour la sauvegarde avant de zipper l'ensemble des dumps
 mkdir -p "${DATATMP}/${DATANAME}"
+[ $? -ne 0 ] && ERROR=1 && echo "*** Problème pour créer le dossier ${DATATMP}/${DATANAME} ***"
  
 # On place dans un tableau le nom de toutes les bases de données du serveur
 databases="$(mysql -Bse 'show databases' | grep -v -E $EXCLUSIONS)"
+[ $? -ne 0 ] && ERROR=1 && echo "*** Problème pour obtenir la liste des bases à dumper ***"
 echo "Bases de données à traiter :" >> $LOG_OUT
  
 # Sauvegarde de toutes les bases dans le fichier du jour
 # Pour chacune des bases de données trouvées ...
 for database in ${databases[@]}
 do
-echo "- ${database}.sql"  >> $LOG_OUT
-mysqldump --events --quick --add-locks --lock-tables --extended-insert $database  > ${DATATMP}/${DATANAME}/${database}.sql
-[ $? -ne 0 ] && ERROR=1
+    echo "- ${database}.sql"  >> $LOG_OUT
+    mysqldump --events --quick --add-locks --lock-tables --extended-insert $database  > ${DATATMP}/${DATANAME}/${database}.sql
+    [ $? -ne 0 ] && ERROR=1
 done
  
 ## On commpresse (TAR) tous et on créé un lien symbolique pour le dernier
 cd ${DATATMP}
 echo "Création de l'archive ${DATADIR}/${DATANAME}.sql.gz" >> $LOG_OUT
 tar -czf ${DATADIR}/${DATANAME}.sql.gz ${DATANAME}
-[ $? -ne 0 ] && ERROR=1
+[ $? -ne 0 ] && ERROR=1 && echo "*** Problème lors de la création de l'archive ${DATADIR}/${DATANAME}.sql.gz ***"
 cd ${DATADIR}
 chmod 600 ${DATANAME}.sql.gz
 [ -f last.sql.gz ] &&  rm last.sql.gz
