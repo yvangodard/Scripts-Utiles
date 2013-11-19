@@ -6,8 +6,8 @@
 
 ## Variables
 # Utilisateur SQL à activer si besoin
-# USER='root'
-# PASS='xxxxxxxxx'
+# USER='sqluser'
+# PASS='passusersql'
 # Le script
 CURRENT_DIR=$(dirname $0)
 SCRIPT_NAME=$(basename $0)
