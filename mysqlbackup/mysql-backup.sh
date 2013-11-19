@@ -19,7 +19,7 @@ DATANAME="databasebackup-$(date +%d.%m.%y@%Hh%M)"
 # Répertoire temporaire
 DATATMP="$LOCATION/temp"
 # Mail pour l'envoi du rapport
-MAIL_ADMIN="monmail@moi.me"
+MAIL_ADMIN="mail@mondomaine.fr"
 # Bases SQL à exclure
 EXCLUSIONS='(information_schema)'
 # Version du script
