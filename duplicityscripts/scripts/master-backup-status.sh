@@ -65,7 +65,7 @@ export CLOUDFILES_USERNAME=${HUBICUSER}
 export CLOUDFILES_APIKEY=${HUBICPASSWORD}
 export CLOUDFILES_AUTHURL="hubic|${HUBICAPPID}|${HUBICAPPSECRET}|${HUBICAPPURLREDIRECT}"
 
-duplicity collection-status $CACHE_OPTS $DUPLICITY_OPTS ${URL%/}/
+duplicity collection-status $CACHE_OPTS $DUPLICITY_OPTS ${URL}
 ERR=$?
 
 popd >/dev/null 2>&1

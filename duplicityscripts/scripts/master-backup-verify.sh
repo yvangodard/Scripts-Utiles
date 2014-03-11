@@ -64,7 +64,7 @@ export CLOUDFILES_APIKEY=${HUBICPASSWORD}
 export CLOUDFILES_AUTHURL="hubic|${HUBICAPPID}|${HUBICAPPSECRET}|${HUBICAPPURLREDIRECT}"
 
 if [ -n "$WHAT" ]; then
-	nice duplicity verify $CACHE_OPTS $DUPLICITY_OPTS  $WHAT --exclude / ${URL%/}/ /
+	nice duplicity verify $CACHE_OPTS $DUPLICITY_OPTS  $WHAT --exclude / ${URL} /
 	ERR=$?
 else
 	echo "Mauvaise configuration" >&2

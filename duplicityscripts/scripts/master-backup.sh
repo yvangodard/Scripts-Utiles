@@ -111,7 +111,7 @@ export CLOUDFILES_AUTHURL="hubic|${HUBICAPPID}|${HUBICAPPSECRET}|${HUBICAPPURLRE
 		echo
 		log "Sauvegarde $H vers $URL"
 		echo
-		WHERE="${URL%/}/"
+		WHERE="${URL}"
 		nice duplicity $INCREMENTAL $CACHE_OPTS $DUPLICITY_OPTS $WHAT --exclude / / $WHERE
 		ERR=$?
 		

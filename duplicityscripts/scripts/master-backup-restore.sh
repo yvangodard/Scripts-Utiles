@@ -125,7 +125,7 @@ fi
 
 log "Tentative des restaurations de $CIBLE$GOT_TIME$VERS$FORCED"
 
-duplicity restore $CACHE_OPTS $DUPLICITY_OPTS --file-to-restore "${CIBLE#/}" ${URL%/}/ "$DEST"
+duplicity restore $CACHE_OPTS $DUPLICITY_OPTS --file-to-restore "${CIBLE#/}" ${URL} "$DEST"
 ERR=$?
 
 popd >/dev/null 2>&1
