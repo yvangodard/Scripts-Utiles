@@ -56,11 +56,23 @@ H=$(hostname -s)
 # PASSPHRASE est le secret pour le cryptage avec duplicity
 export PASSPHRASE FTP_PASSWORD
 
+# Paramètres HUBIC
+unset HISTFILE
+unset CLOUDFILES_USERNAME
+unset CLOUDFILES_APIKEY
+unset CLOUDFILES_AUTHURL
+export CLOUDFILES_USERNAME=${HUBICUSER}
+export CLOUDFILES_APIKEY=${HUBICPASSWORD}
+export CLOUDFILES_AUTHURL="hubic|${HUBICAPPID}|${HUBICAPPSECRET}|${HUBICAPPURLREDIRECT}"
+
 duplicity cleanup $CACHE_OPTS $DUPLICITY_OPTS ${URL%/}/
 ERR=$?
 
 popd >/dev/null 2>&1
 [ -n "$DEV" ] && umount $BASE >/dev/null 2>&1
 
-exit $ERR
+unset CLOUDFILES_USERNAME
+unset CLOUDFILES_APIKEY
+unset CLOUDFILES_AUTHURL
 
+exit $ERR

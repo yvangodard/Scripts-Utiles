@@ -96,6 +96,15 @@ STDOUT_FILE=$(mktemp .master-backup-stdout.XXXXXXXX)
 # PASSPHRASE est le secret pour le cryptage avec duplicity
 export PASSPHRASE FTP_PASSWORD
 
+# Paramètres HUBIC
+unset HISTFILE
+unset CLOUDFILES_USERNAME
+unset CLOUDFILES_APIKEY
+unset CLOUDFILES_AUTHURL
+export CLOUDFILES_USERNAME=${HUBICUSER}
+export CLOUDFILES_APIKEY=${HUBICPASSWORD}
+export CLOUDFILES_AUTHURL="hubic|${HUBICAPPID}|${HUBICAPPSECRET}|${HUBICAPPURLREDIRECT}"
+
 {
 	if [ -n "$WHAT" ]; then
 		rm -f .FAILURE
@@ -190,5 +199,8 @@ popd >/dev/null 2>&1
 
 touch $BASE/.done
 
-exit $ERR
+unset CLOUDFILES_USERNAME
+unset CLOUDFILES_APIKEY
+unset CLOUDFILES_AUTHURL
 
+exit $ERR

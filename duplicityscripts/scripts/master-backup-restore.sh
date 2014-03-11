@@ -81,6 +81,15 @@ fi
 # Dossier temporaire à utiliser
 DUPLICITY_OPTS="$DUPLICITY_OPTS --tempdir $BASE/tmp"
 
+# Paramètres HUBIC
+unset HISTFILE
+unset CLOUDFILES_USERNAME
+unset CLOUDFILES_APIKEY
+unset CLOUDFILES_AUTHURL
+export CLOUDFILES_USERNAME=${HUBICUSER}
+export CLOUDFILES_APIKEY=${HUBICPASSWORD}
+export CLOUDFILES_AUTHURL="hubic|${HUBICAPPID}|${HUBICAPPSECRET}|${HUBICAPPURLREDIRECT}"
+
 unset CACHE_OPTS
 if [ -n "$CACHE" ]; then
 	[ -d "$CACHE" ] || mkdir -p "$CACHE"
@@ -122,5 +131,8 @@ ERR=$?
 popd >/dev/null 2>&1
 [ -n "$DEV" ] && umount $BASE >/dev/null 2>&1
 
-exit $ERR
+unset CLOUDFILES_USERNAME
+unset CLOUDFILES_APIKEY
+unset CLOUDFILES_AUTHURL
 
+exit $ERR
