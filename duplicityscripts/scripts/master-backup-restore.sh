@@ -14,7 +14,7 @@ elif [ "$1" == "--conf" ]; then
 	shift ; shift
 fi
 
-export PATH=/bin:/usr/bin:/sbin:/usr/sbin
+export PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin
 
 : ${BASE:=/var/backups/master}
 : ${DEV:=}
