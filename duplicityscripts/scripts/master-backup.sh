@@ -1,11 +1,11 @@
 #! /bin/bash
 
-# Charger la configuration par défaut si elle existe
+# Charger la configuration par dÃ©faut si elle existe
 [ -e /etc/master-backup.conf ] && . /etc/master-backup.conf
 
-# Charger une configuration si fournie en argument du script pouvant écraser certaines
-# valeurs de la configuration par défaut
-# Seules les configurations dont le template est /etc/master-backup*.conf sont acceptées
+# Charger une configuration si fournie en argument du script pouvant Ã©craser certaines
+# valeurs de la configuration par dÃ©faut
+# Seules les configurations dont le template est /etc/master-backup*.conf sont acceptÃ©es
 if [ -n "$1" -a -z "${1##/etc/master-backup*}" -a -z "${1%%*.conf}" -a -e "$1" ]; then
 	. $1
 	shift
@@ -35,9 +35,9 @@ log () {
 
 TIMESTAMP=$(timestamp)
 
-# Duplicity sert pour les sauvegardes complètes et incrémentales vers une destination
+# Duplicity sert pour les sauvegardes complÃ¨tes et incrÃ©mentales vers une destination
 if [ -z "$URL" ]; then
-	log "Pas d'URL définie pour réaliser la sauvegarde"
+	log "Pas d'URL dÃ©finie pour rÃ©aliser la sauvegarde"
 	exit 1
 fi
 
@@ -65,15 +65,15 @@ pushd $BASE >/dev/null 2>&1 || exit 1
 
 DUPLICITY_OPTS="$OPTIONS $*"
 
-# Pas besoin de l'option full si on gère un dossier dédié par mois
+# Pas besoin de l'option full si on gÃ¨re un dossier dÃ©diÃ© par mois
 if [ -n "$FULLDELAY" -a -z "$INCREMENTAL" ]; then
 	DUPLICITY_OPTS="$DUPLICITY_OPTS --full-if-older-than $FULLDELAY"
 fi
 
-# Taille des volumes à utiliser
+# Taille des volumes Ã  utiliser
 DUPLICITY_OPTS="$DUPLICITY_OPTS --volsize 100"
 
-# Dossier temporaire à utiliser
+# Dossier temporaire Ã  utiliser
 DUPLICITY_OPTS="$DUPLICITY_OPTS --tempdir $BASE/tmp"
 
 unset CACHE_OPTS
@@ -96,7 +96,7 @@ STDOUT_FILE=$(mktemp .master-backup-stdout.XXXXXXXX)
 # PASSPHRASE est le secret pour le cryptage avec duplicity
 export PASSPHRASE FTP_PASSWORD
 
-# Paramètres HUBIC
+# ParamÃ¨tres HUBIC
 unset HISTFILE
 unset CLOUDFILES_USERNAME
 unset CLOUDFILES_APIKEY
@@ -116,24 +116,24 @@ export CLOUDFILES_AUTHURL="hubic|${HUBICAPPID}|${HUBICAPPSECRET}|${HUBICAPPURLRE
 		ERR=$?
 		
 		if (( ERR )); then
-			log "Sauvegarde $H vers $URL échouée"
+			log "Sauvegarde $H vers $URL Ã©chouÃ©e"
 			touch .FAILURE
 		else
-			log "Sauvegarde $H vers $URL réussie"
+			log "Sauvegarde $H vers $URL rÃ©ussie"
 		fi
 		
-		# On permet le nettoyage même en cas d'erreur au cas où un reparamétrage sur la
-		# taille des sauvegardes corrige une erreur liée à un espace de stockage plein
+		# On permet le nettoyage mÃªme en cas d'erreur au cas oÃ¹ un reparamÃ©trage sur la
+		# taille des sauvegardes corrige une erreur liÃ©e Ã  un espace de stockage plein
 		if (( HOWMANYKEEPFULL >= 1 )); then
 			log "Nettoyage des sauvegardes dans  $URL"
 			nice duplicity remove-all-but-n-full $HOWMANYKEEPFULL $CACHE_OPTS --force $WHERE
 		fi
 	else
-		log "Sauvegarde $H vers $URL impossible sans spécifier quoi sauvegarder"
+		log "Sauvegarde $H vers $URL impossible sans spÃ©cifier quoi sauvegarder"
 	fi
 } 2>&1 | \
 {
-	# Boucle de chronométrage de la sauvegarde insérant le temps d'exécution de
+	# Boucle de chronomÃ©trage de la sauvegarde insÃ©rant le temps d'exÃ©cution de
 	# la sauvegarde dans le journal
 	let STARTTIME=$(date +%s)
 	while read line
@@ -143,10 +143,10 @@ export CLOUDFILES_AUTHURL="hubic|${HUBICAPPID}|${HUBICAPPSECRET}|${HUBICAPPURLRE
 	echo
 	let STOPTIME=$(date +%s)
 	let TOTALMIN=(STOPTIME-STARTTIME)/60 TOTALMOD=(STOPTIME-STARTTIME)%60
-	log "Durée totale du processus de backup: $TOTALMIN minutes et $TOTALMOD secondes"
+	log "DurÃ©e totale du processus de backup: $TOTALMIN minutes et $TOTALMOD secondes"
 } >$STDOUT_FILE 2>&1
 
-# Vérification du statut de sauvegarde
+# VÃ©rification du statut de sauvegarde
 if [ "$?" -ne 0 -o -e .FAILURE ]; then
 	STATUS="FAILED"
 	ERR=1
@@ -160,9 +160,9 @@ if (( REPORT_STATUS )); then
 	duplicity collection-status $CACHE_OPTS $DUPLICITY_OPTS ${URL%/}/ >>$STDOUT_FILE
 fi
 
-# Le journal de sauvegarde est stocké dans $BASE/.master-backup-stdout.txt
-# mais peut être aussi envoyé par email à l'issue de la sauvegarde ou simplement
-# être envoyé sur la sortie standard
+# Le journal de sauvegarde est stockÃ© dans $BASE/.master-backup-stdout.txt
+# mais peut Ãªtre aussi envoyÃ© par email Ã  l'issue de la sauvegarde ou simplement
+# Ãªtre envoyÃ© sur la sortie standard
 if [ -n "$EMAIL" ]; then
 	[ -n "$EMAILADMIN" ] && MAILOPTION="-c $EMAILADMIN"
 	cat $STDOUT_FILE | \
